@@ -43,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/subtitle" />
 
     <ScrollView
+        android:id="@+id/scrollable_form_section"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -50,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/preview_button"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,6 +72,7 @@
                     android:hint="Nº"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_number_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
@@ -83,6 +85,7 @@
                     android:hint="Fecha (dd/mm/yyyy)"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_date_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="date"
@@ -109,6 +112,7 @@
                     android:hint="Nombre"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_receiver_name_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapSentences"
@@ -121,6 +125,7 @@
                     android:hint="CI"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_receiver_ci_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -142,6 +147,7 @@
                     android:hint="Nombre"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_giver_name_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapSentences"
@@ -154,6 +160,7 @@
                     android:hint="CI"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_giver_ci_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -167,6 +174,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
@@ -175,13 +183,15 @@
                     android:hint="Cantidad"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_amount_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <ToggleButton
-                    android:id="@+id/toggleButton"
+                    android:id="@+id/receipt_currency_type_field"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -197,6 +207,7 @@
                 android:hint="En Literal (Incluya Moneda)"
                 >
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/receipt_written_amount_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -214,6 +225,7 @@
                 android:hint="Concepto"
                 >
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/receipt_concept_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
@@ -231,6 +243,7 @@
                     android:hint="Total"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_total_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
@@ -243,6 +256,7 @@
                     android:hint="A cuenta"
                     >
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/receipt_on_account_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
@@ -250,34 +264,42 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <RadioGroup
+                android:id="@+id/receipt_transaction_type_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
+                android:checkedButton="@id/receipt_transaction_type_cash_radio_button"
                 android:orientation="horizontal">
                 <RadioButton
+                    android:id="@+id/receipt_transaction_type_cash_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Efectivo"/>
                 <RadioButton
+                    android:id="@+id/receipt_transaction_type_cheque_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cheque"/>
                 <RadioButton
+                    android:id="@+id/receipt_transaction_type_bank_radio_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Banco"/>
             </RadioGroup>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Previsualizar Recibo"/>
-
         </LinearLayout>
 
     </ScrollView>
-
+    <Button
+        android:id="@+id/preview_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Previsualizar Recibo"
+        app:layout_constraintTop_toBottomOf="@+id/scrollable_form_section"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 
 
