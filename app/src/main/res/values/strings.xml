@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Recibos ArenA</string>
+    <string name="arena">ArenA</string>
+    <string name="subtitle_text">Generador de Recibos</string>
 </resources>

@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val genericReceipt: Receipt = Receipt(binding)
         Log.i("HolaMundo", genericReceipt.toString())
 
