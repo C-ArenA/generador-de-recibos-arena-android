@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.example.recibosarena.databinding.ActivityMainBinding
+import com.ibm.icu.text.RuleBasedNumberFormat
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.DateFormat
 import java.util.*
+
 
 
 class Receipt(private val formBinding: ActivityMainBinding, private val context: Context) {
@@ -24,7 +27,7 @@ class Receipt(private val formBinding: ActivityMainBinding, private val context:
 
     var amount: BigDecimal = BigDecimal(0)
     var currency: Int = BOB
-    var writtenAmount: String = "Cero Bolivianos"
+    var writtenAmount: String = convertIntoWords(amount.toDouble(), "es", "BO") + "Bolivianos"
 
 
     var concept: String = "Probando la aplicación"
@@ -61,8 +64,10 @@ class Receipt(private val formBinding: ActivityMainBinding, private val context:
         if (formBinding.receiptAmountField.text.toString() != ""){
             amount = BigDecimal(formBinding.receiptAmountField.text.toString().toDouble())
         }
+        amount = amount.setScale(2, RoundingMode.CEILING)
+        formBinding.receiptAmountField.setText(amount.toString())
         currency = if(formBinding.receiptCurrencyTypeField.isChecked) USD else BOB
-        writtenAmount = formBinding.receiptWrittenAmountField.text.toString() + when(currency) {
+        writtenAmount = convertIntoWords(amount.toDouble(), "es", "BO") + when(currency) {
             USD -> " Dólares."
             BOB -> " Bolivianos."
             else -> " Bolivianos"
@@ -73,11 +78,16 @@ class Receipt(private val formBinding: ActivityMainBinding, private val context:
         if (formBinding.receiptTotalField.text.toString() != "") {
             total = BigDecimal(formBinding.receiptTotalField.text.toString().toDouble())
         }
+        total = total.setScale(2, RoundingMode.CEILING)
+        formBinding.receiptTotalField.setText(total.toString())
         if (formBinding.receiptOnAccountField.text.toString() != "") {
             onAccount = BigDecimal(formBinding.receiptOnAccountField.text.toString().toDouble())
         }
+        onAccount = onAccount.setScale(2, RoundingMode.CEILING)
+        formBinding.receiptOnAccountField.setText(onAccount.toString())
 
         balance = total - onAccount
+        balance = balance.setScale(2, RoundingMode.HALF_UP)
         transactionType = when(formBinding.receiptTransactionTypeRadioGroup.checkedRadioButtonId) {
             R.id.receipt_transaction_type_cash_radio_button -> CASH
             R.id.receipt_transaction_type_bank_radio_button -> BANK
@@ -110,4 +120,9 @@ class Receipt(private val formBinding: ActivityMainBinding, private val context:
                 "Con CI: $receiverCI" + "\n"
     }
 
+    fun convertIntoWords(numericalAmount: Double, language: String, country: String) : String{
+        val local : Locale = Locale(language, country)
+        val rbnf = RuleBasedNumberFormat(local, RuleBasedNumberFormat.SPELLOUT)
+        return rbnf.format(numericalAmount)
+    }
 }
