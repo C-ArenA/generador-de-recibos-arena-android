@@ -6,7 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-<ImageView
+    <Button
+        android:id="@+id/dummy_data_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dummy data"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
     android:id="@+id/logo"
     android:layout_width="40dp"
     android:layout_height="40dp"
@@ -66,10 +73,12 @@
                 android:orientation="horizontal"
                 android:baselineAligned="false">
                 <com.google.android.material.textfield.TextInputLayout
+
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:hint="Nº"
+                    app:errorEnabled="true"
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/receipt_number_field"

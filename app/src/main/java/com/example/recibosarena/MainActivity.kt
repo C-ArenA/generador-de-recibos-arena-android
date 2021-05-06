@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.recibosarena.databinding.ActivityMainBinding
 import java.lang.Error
+import java.lang.IllegalArgumentException
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -16,9 +17,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setDefaultReceiptNumber()
-
-        //val genericReceipt: Receipt = Receipt(binding, this)
-        //Log.i("HolaMundo", genericReceipt.toString())
+        // We're gonna fill our form with dummy data for testing purposes
+        binding.dummyDataButton.setOnClickListener { fillFormWithDummyData() }
+        // The other button will create the preview
         binding.previewButton.setOnClickListener { createPreview() }
     }
     private fun setDefaultReceiptNumber(){
@@ -29,14 +30,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun createPreview() {
         try {
-            val genericReceipt: Receipt = Receipt(binding, this)
+            val genericReceipt: Receipt = Receipt(binding)
             binding.receiptDataText.text = genericReceipt.toString()
             Log.i("ReceiptData", genericReceipt.toString())
-        } catch (e: Error) {
-            Toast.makeText(this,"Rellene todos los campos con datos válidos", Toast.LENGTH_SHORT).show()
+        } catch (e: IllegalArgumentException) {
+            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
             return
         }
 
 
+    }
+
+    private fun fillFormWithDummyData() {
+        with(binding){
+            receiptReceiverNameField.setText("Fulano Pérez")
+            receiptReceiverCiField.setText("1234567 LP")
+            receiptGiverNameField.setText("Juan Mengano")
+            receiptGiverCiField.setText("8765432 SC")
+
+            receiptAmountField.setText("0")
+            receiptConceptField.setText("Transacción de prueba")
+            receiptTotalField.setText("0")
+            receiptOnAccountField.setText("0")
+        }
     }
 }
