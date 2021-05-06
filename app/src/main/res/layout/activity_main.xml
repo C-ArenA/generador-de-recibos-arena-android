@@ -289,6 +289,12 @@
                     android:text="Banco" />
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/receipt_data_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
         </LinearLayout>
 
     </ScrollView>

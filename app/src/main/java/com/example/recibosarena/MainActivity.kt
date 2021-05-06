@@ -30,7 +30,8 @@ class MainActivity : AppCompatActivity() {
     private fun createPreview() {
         try {
             val genericReceipt: Receipt = Receipt(binding, this)
-            Log.i("HolaMundo", genericReceipt.toString())
+            binding.receiptDataText.text = genericReceipt.toString()
+            Log.i("ReceiptData", genericReceipt.toString())
         } catch (e: Error) {
             Toast.makeText(this,"Rellene todos los campos con datos válidos", Toast.LENGTH_SHORT).show()
             return
