@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.example.recibosarena.databinding.ActivityMainBinding
 import java.lang.Error
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             val genericReceipt: Receipt = Receipt(binding)
             binding.receiptDataText.text = genericReceipt.toString()
             Log.i("ReceiptData", genericReceipt.toString())
+            binding.canvasPreView.visibility = View.VISIBLE
         } catch (e: IllegalArgumentException) {
             Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
             return
