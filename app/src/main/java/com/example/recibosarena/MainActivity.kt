@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.recibosarena.databinding.ActivityMainBinding
-import java.lang.Error
 import java.lang.IllegalArgumentException
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         binding.dummyDataButton.setOnClickListener { fillFormWithDummyData() }
         // The other button will create the preview
         binding.previewButton.setOnClickListener { createPreview() }
+
     }
     private fun setDefaultReceiptNumber(){
         val sharedPreferences: SharedPreferences = getSharedPreferences("ReceiptPreferences", Context.MODE_PRIVATE)
@@ -34,7 +34,12 @@ class MainActivity : AppCompatActivity() {
             val genericReceipt: Receipt = Receipt(binding)
             binding.receiptDataText.text = genericReceipt.toString()
             Log.i("ReceiptData", genericReceipt.toString())
+
             binding.canvasPreView.visibility = View.VISIBLE
+
+            binding.canvasPreView.invalidate(genericReceipt)
+
+
         } catch (e: IllegalArgumentException) {
             Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
             return

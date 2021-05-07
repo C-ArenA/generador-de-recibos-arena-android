@@ -304,24 +304,30 @@
         app:exampleDimension="24sp"
         app:exampleDrawable="@drawable/recibo1"
         app:exampleString=""
-        android:visibility="gone"
+
+        tools:visibility="visible"
+
         app:layout_constraintTop_toBottomOf="@+id/scrollable_form_section"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
         />
+
     <Button
         android:id="@+id/preview_button"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
         android:text="Previsualizar Recibo"
 
-        app:layout_constraintTop_toBottomOf="@+id/canvas_pre_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/canvas_pre_view"
+         />
 
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--        android:visibility="gone"-->

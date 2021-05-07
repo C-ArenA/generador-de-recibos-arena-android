@@ -1,14 +1,11 @@
 package com.example.recibosarena
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
+
 import com.example.recibosarena.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.ibm.icu.text.RuleBasedNumberFormat
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.DateFormat
 import java.util.*
 
 
@@ -26,10 +23,16 @@ class Receipt(private val formBinding: ActivityMainBinding) {
     var giverCI: String
     var amount: BigDecimal
     private var _currency: Int = if(formBinding.receiptCurrencyTypeField.isChecked) USD else BOB
-    val currency: String
+    val currency: Int
         get() = when(_currency){
-            USD -> "Dólares"
+            BOB -> 0
+            USD -> 1
+            else -> 0
+        }
+    val currencyString1: String
+        get() = when(_currency){
             BOB -> "Bolivianos"
+            USD -> "Dólares"
             else -> "Bs"
         }
     var writtenAmount: String
@@ -43,7 +46,14 @@ class Receipt(private val formBinding: ActivityMainBinding) {
         R.id.receipt_transaction_type_cheque_radio_button -> CHEQUE
         else -> CASH
     }
-    val transactionType: String
+    val transactionType: Int
+        get() =  when(_transactionType) {
+            CASH -> 0
+            CHEQUE -> 1
+            BANK -> 2
+            else -> 0
+        }
+    val transactionTypeString: String
         get() =  when(_transactionType) {
             CASH -> "Efectivo"
             BANK -> "Banco"
@@ -60,6 +70,7 @@ class Receipt(private val formBinding: ActivityMainBinding) {
     }
 
     init {
+
         // Checks all the input fields before starting
         if(areInputsInvalid()) throw IllegalArgumentException("Debe Rellenar todos los campos")
         // Number Field
@@ -104,11 +115,11 @@ class Receipt(private val formBinding: ActivityMainBinding) {
         return "\n" +
                 "Número de Recibo: $number" + "\n" +
                 "Fecha: $date" + "\n" +
-                "Moneda: $currency" + "\n" +
+                "Moneda: $currencyString1" + "\n" +
                 "Cantidad: $amount" + "\n" +
                 "Recibí de: $giverName" + "\n" +
                 "Con CI: $giverCI" + "\n" +
-                "Tipo de transacción: $transactionType" + "\n" +
+                "Tipo de transacción: $transactionTypeString" + "\n" +
                 "La suma de: $writtenAmount" + "\n" +
                 "Concepto: $concept" + "\n" +
                 "Total: $total" + "\n" +
