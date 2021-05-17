@@ -1,6 +1,7 @@
 package com.example.recibosarena
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -12,6 +13,7 @@ import android.view.View
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * TODO: document your custom view class.
@@ -91,9 +93,9 @@ class CanvasPreView : View {
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
-        context,
-        attrs,
-        defStyle
+            context,
+            attrs,
+            defStyle
     ) {
         init(attrs, defStyle)
     }
@@ -117,26 +119,26 @@ class CanvasPreView : View {
         rReceiverCI = ReceiptTextField(376f, 443f)
         // Load attributes
         val a = context.obtainStyledAttributes(
-            attrs, R.styleable.CanvasPreView, defStyle, 0
+                attrs, R.styleable.CanvasPreView, defStyle, 0
         )
 
         _exampleString = a.getString(
-            R.styleable.CanvasPreView_exampleString
+                R.styleable.CanvasPreView_exampleString
         )
         _exampleColor = a.getColor(
-            R.styleable.CanvasPreView_exampleColor,
-            exampleColor
+                R.styleable.CanvasPreView_exampleColor,
+                exampleColor
         )
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
         _exampleDimension = a.getDimension(
-            R.styleable.CanvasPreView_exampleDimension,
-            exampleDimension
+                R.styleable.CanvasPreView_exampleDimension,
+                exampleDimension
         )
 
         if (a.hasValue(R.styleable.CanvasPreView_exampleDrawable)) {
             exampleDrawable = a.getDrawable(
-                R.styleable.CanvasPreView_exampleDrawable
+                    R.styleable.CanvasPreView_exampleDrawable
             )
             exampleDrawable?.callback = this
         }
@@ -180,8 +182,8 @@ class CanvasPreView : View {
         // Draw the example drawable on top of the text.
         exampleDrawable?.let {
             it.setBounds(
-                paddingLeft, paddingTop,
-                paddingLeft + contentWidth, paddingTop + contentHeight
+                    paddingLeft, paddingTop,
+                    paddingLeft + contentWidth, paddingTop + contentHeight
             )
             it.draw(canvas)
         }
@@ -201,6 +203,7 @@ class CanvasPreView : View {
 
         val paint = Paint()
         paint.color = Color.BLACK
+        paint.textSize = 25f
         Log.i("Amount", rAmount.text + rAmount.x + rAmount.y)
         canvas.drawText(rAmount.text, rAmount.x, rAmount.y, paint)
         canvas.drawText(rNumber.text, rNumber.x, rNumber.y, paint)
@@ -215,7 +218,7 @@ class CanvasPreView : View {
         canvas.drawText(rGiverCI.text, rGiverCI.x, rGiverCI.y, paint)
         canvas.drawText(rReceiverName.text, rReceiverName.x, rReceiverName.y, paint)
         canvas.drawText(rReceiverCI.text, rReceiverCI.x, rReceiverCI.y, paint)
-        val rTransactionTypeX = paperToScreenWidthScale(when(rTransactionType){
+        val rTransactionTypeX = paperToScreenWidthScale(when (rTransactionType) {
             0 -> 435f
             1 -> 502f
             2 -> 562f
@@ -236,7 +239,7 @@ class CanvasPreView : View {
         rAmount = ReceiptTextField(42f, 178f, NumberFormat.getCurrencyInstance(locale).format(receipt.amount))
         rNumber = ReceiptTextField(367f, 178f, receipt.number)
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        rDate = ReceiptTextField(472f, 178f,  dateFormatter.format(receipt.date))
+        rDate = ReceiptTextField(472f, 178f, dateFormatter.format(receipt.date))
 
         rReceivedFrom = ReceiptTextField(103f, 206f, receipt.giverName)
         rLiteralAmount = ReceiptTextField(119f, 244f, receipt.writtenAmount)
@@ -253,6 +256,13 @@ class CanvasPreView : View {
 
         rTransactionType = receipt.transactionType
         super.invalidate()
+    }
+
+    fun canvasToBitmap(): Bitmap? {
+        val bitmap = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        this.draw(canvas)
+        return bitmap
     }
 
 }
