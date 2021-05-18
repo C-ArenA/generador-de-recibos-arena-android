@@ -339,9 +339,9 @@
     <Button
         android:id="@+id/generate_image"
         android:layout_width="wrap_content"
-
+        android:enabled="false"
         android:layout_height="wrap_content"
-        android:text="Guardar como imagen"
+        android:text="Guardar y Compartir"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/preview_button"
