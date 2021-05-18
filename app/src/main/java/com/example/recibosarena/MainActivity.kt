@@ -1,6 +1,5 @@
 package com.example.recibosarena
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,6 +8,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recibosarena.databinding.ActivityMainBinding
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             Log.i("ReceiptData", genericReceipt.toString())
             binding.canvasPreView.invalidate(genericReceipt)
             binding.generateImage.isEnabled = true
+            closeKeyboard()
 
         } catch (e: IllegalArgumentException) {
             Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
@@ -149,5 +151,21 @@ class MainActivity : AppCompatActivity() {
         binding.receiptConceptField.setText("")
         binding.receiptTotalField.setText("")
         binding.receiptOnAccountField.setText("")
+    }
+
+    private fun closeKeyboard() {
+        // this will give us the view
+        // which is currently focus
+        // in this layout
+        val view: View? = this.currentFocus
+        // if nothing is currently
+        // focus then this will protect
+        // the app from crash
+        if (view != null) {
+            // now assign the system
+            // service to InputMethodManager
+            val manager: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

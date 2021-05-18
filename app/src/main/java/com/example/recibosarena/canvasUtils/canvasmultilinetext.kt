@@ -9,6 +9,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.graphics.withTranslation
 import androidx.core.util.lruCache
 
+// i'VE GOT THIS CODE FROM HERE:
+// https://medium.com/over-engineering/drawing-multiline-text-to-canvas-on-android-9b98f0bfa16a
+
 @RequiresApi(Build.VERSION_CODES.O)
 fun Canvas.drawMultilineText(
         text: CharSequence,
