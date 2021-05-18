@@ -13,6 +13,7 @@ import android.view.View
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.recibosarena.canvasUtils.drawMultilineText
 
 
 /**
@@ -61,9 +62,9 @@ class CanvasPreView : View {
     /**
      * In the example view, this drawable is drawn above the text.
      */
-    var exampleDrawable: Drawable? = null
+    private var exampleDrawable: Drawable? = null
 
-    inner class ReceiptTextField(val paperX: Float, val paperY: Float, var text: String = "XXXXXXXX"){
+    inner class ReceiptTextField(private val paperX: Float, private val paperY: Float, var text: String = "NOT VALID"){
         val x = paperToScreenWidthScale(paperX)
         val y = paperToScreenHeightScale(paperY)
     }
@@ -158,8 +159,8 @@ class CanvasPreView : View {
     private fun invalidateTextPaintAndMeasurements() {
         textPaint.let {
             it.textSize = exampleDimension
-            it.color = exampleColor
-            textWidth = it.measureText(exampleString)
+            it.color = Color.BLACK
+            //textWidth = it.measureText(exampleString)
             textHeight = it.fontMetrics.bottom
         }
     }
@@ -203,14 +204,15 @@ class CanvasPreView : View {
 
         val paint = Paint()
         paint.color = Color.BLACK
-        paint.textSize = 25f
+        paint.textSize = paperToScreenHeightScale(13f)
+        textPaint.textSize = paperToScreenHeightScale(13f)
         Log.i("Amount", rAmount.text + rAmount.x + rAmount.y)
         canvas.drawText(rAmount.text, rAmount.x, rAmount.y, paint)
         canvas.drawText(rNumber.text, rNumber.x, rNumber.y, paint)
         canvas.drawText(rDate.text, rDate.x, rDate.y, paint)
         canvas.drawText(rReceivedFrom.text, rReceivedFrom.x, rReceivedFrom.y, paint)
-        canvas.drawText(rLiteralAmount.text, rLiteralAmount.x, rLiteralAmount.y, paint)
-        canvas.drawText(rConcept.text, rConcept.x, rConcept.y, paint)
+        canvas.drawMultilineText(rLiteralAmount.text, textPaint, paperToScreenWidthScale(470f).toInt(), rLiteralAmount.x, rLiteralAmount.y)
+        canvas.drawMultilineText(rConcept.text, textPaint, paperToScreenWidthScale(480f).toInt(), rConcept.x, rConcept.y)
         canvas.drawText(rTotal.text, rTotal.x, rTotal.y, paint)
         canvas.drawText(rOnAccount.text, rOnAccount.x, rOnAccount.y, paint)
         canvas.drawText(rBalance.text, rBalance.x, rBalance.y, paint)
@@ -218,6 +220,7 @@ class CanvasPreView : View {
         canvas.drawText(rGiverCI.text, rGiverCI.x, rGiverCI.y, paint)
         canvas.drawText(rReceiverName.text, rReceiverName.x, rReceiverName.y, paint)
         canvas.drawText(rReceiverCI.text, rReceiverCI.x, rReceiverCI.y, paint)
+
         val rTransactionTypeX = paperToScreenWidthScale(when (rTransactionType) {
             0 -> 435f
             1 -> 502f
@@ -239,11 +242,11 @@ class CanvasPreView : View {
         rAmount = ReceiptTextField(42f, 178f, NumberFormat.getCurrencyInstance(locale).format(receipt.amount))
         rNumber = ReceiptTextField(367f, 178f, receipt.number)
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        rDate = ReceiptTextField(472f, 178f, dateFormatter.format(receipt.date))
+        rDate = ReceiptTextField(472f, 178f, dateFormatter.format(receipt.date!!))
 
         rReceivedFrom = ReceiptTextField(103f, 206f, receipt.giverName)
-        rLiteralAmount = ReceiptTextField(119f, 244f, receipt.writtenAmount)
-        rConcept = ReceiptTextField(105f, 283f, receipt.concept)
+        rLiteralAmount = ReceiptTextField(119f, 230f, receipt.writtenAmount)
+        rConcept = ReceiptTextField(105f, 269f, receipt.concept)
 
         rTotal = ReceiptTextField(108f, 344f, NumberFormat.getCurrencyInstance(locale).format(receipt.total))
         rOnAccount = ReceiptTextField(292f, 344f, NumberFormat.getCurrencyInstance(locale).format(receipt.onAccount))
